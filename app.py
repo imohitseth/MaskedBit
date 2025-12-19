@@ -2,9 +2,9 @@ import streamlit as st
 from PIL import Image
 import io
 import engine
-st.set_page_config(page_title="Wizard's Invisible Ink", page_icon="🪄")
+st.set_page_config(page_title="MaskedBit", page_icon="🪄")
 
-st.title("🪄 Wizard's Invisible Ink")
+st.title("MaskedBit")
 st.markdown("Hide secret messages inside images using LSB Steganography.")
 
 tab1, tab2 = st.tabs(["🔒 Hide Message", "🔓 Reveal Message"])
@@ -54,4 +54,5 @@ with tab2:
                     else:
                         st.warning("No hidden message detected or delimiter missing.")
                 except Exception as e:
+
                     st.error(f"An error occurred: {e}")
