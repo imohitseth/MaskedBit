@@ -1,6 +1,6 @@
-# MaskedBit
+# MaskedBit 🎭
 
-Link- https://maskedbit.streamlit.app/
+Link: https://maskedbit.streamlit.app/
 
 **MaskedBit** is a production-grade, privacy-focused security tool that bridges the gap between cryptography and spatial steganography. Built with Python and Streamlit, the system implements an end-to-end processing pipeline that encrypts sensitive payloads (text data or nested asset files) using **AES-256-GCM (Galois/Counter Mode)** before safely embedding them into the Least Significant Bits (LSB) of lossless image pixel matrices.
 
@@ -30,8 +30,22 @@ graph TD
     F[PNG / BMP Lossless Image] --> G[LSB Spatial Embedding Engine]
     E --> G
     G --> H[Final Masked Image]
+```
 
+### 1. Cryptographic Pipeline Overview
+Prior to binary spatial parsing, payloads pass through an authenticated cipher matrix:
+1. **Key Derivation:** The raw input key phrase undergoes deterministic stretching or padding to derive a mathematically safe 32-byte (256-bit) cryptographic matrix key.
+2. **Nonce Injection:** An initialization vector / 12-byte cryptographically secure pseudo-random Nonce is prepended to ensure structural ciphertext output differences, even across identical inputs.
+3. **Authentication Tag Generation:** A 16-byte MAC tag is extracted out of the GCM computation block, providing runtime execution safety parameters upon inverse decoding.
 
+$$\text{Total Payload Boundary Size (Bytes)} = 12_{\text{Nonce}} + 16_{\text{Tag}} + \text{Len}(\text{Ciphertext})$$
+
+### 2. Spatial Bit-Mapping (LSB)
+The combined payload string is unpacked into individual bit flags. The LSB algorithm alters the final structural bit of the specified color channel bytes (R, G, B) mapping iteratively through the spatial coordinates of the array matrix. 
+
+Using exactly **1-bit per pixel channel**, mutations remain microscale modifications ($1/256$ variants in color variance), making structural variances imperceptible to the human eye.
+
+---
 
 ## 🎛️ Technology Stack & Dependencies
 
@@ -42,14 +56,13 @@ graph TD
 
 ---
 
-```markdown
 ## ⚙️ Local Development Setup
 
-To replicate, test, or modify the processing pipeline locally:
+To replicate, test, or modify the processing pipeline locally on your native hardware interface:
 
 ```bash
 # 1. Clone the repository down into your environment
-git clone [https://github.com/imohitseth/MaskedBit.git](https://github.com/imohitseth/MaskedBit.git)
+git clone https://github.com/imohitseth/MaskedBit.git
 cd MaskedBit
 
 # 2. Establish a modular isolated virtual workspace
@@ -61,3 +74,4 @@ pip install -r requirements.txt
 
 # 4. Boot up the application server interface instance
 streamlit run app.py
+```
